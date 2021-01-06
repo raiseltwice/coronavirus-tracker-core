@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ct_user
+    password: password
+    url: jdbc:mysql://localhost:3306/ct
+    hikari:
+      data-source-properties:
+        rewriteBatchedStatements: true
+
+  liquibase:
+    enabled: false
