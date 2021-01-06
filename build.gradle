@@ -14,15 +14,15 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.0'
+
     compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.13.0'
 
-    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3'
-    implementation 'com.github.raiseltwice:ct-entity-common:1.9'
+    implementation 'com.github.raiseltwice:ct-entity-common:1.10'
     implementation 'com.github.raiseltwice:ct-core-api-common:1.9'
 
     // lombok

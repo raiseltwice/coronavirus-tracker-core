@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class EntityToProtobufMapper {
+
     public Protos.Countries mapCountries(List<Country> countryEntities) {
         List<Protos.Country> countryProtos =
                 countryEntities.stream().map(this::mapCountry).collect(Collectors.toList());

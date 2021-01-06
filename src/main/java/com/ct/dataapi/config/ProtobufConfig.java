@@ -11,5 +11,4 @@ public class ProtobufConfig {
     public ProtobufHttpMessageConverter protobufHttpMessageConverter() {
         return new ProtobufHttpMessageConverter();
     }
-
 }

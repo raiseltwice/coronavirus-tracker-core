@@ -39,5 +39,4 @@ public class CountryCasesPerDateAccessController {
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {
         return countryCasesPerDateProtobufService.findAllByCountryNameAndDateRange(countryName, startDate, endDate);
     }
-
 }
