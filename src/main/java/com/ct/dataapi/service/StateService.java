@@ -1,8 +1,8 @@
 package com.ct.dataapi.service;
 
 import com.ct.dataapi.dto.StateDTO;
-import com.ct.dataapi.entitiestodelete.Country;
-import com.ct.dataapi.entitiestodelete.State;
+import com.ct.entitycommon.entity.Country;
+import com.ct.entitycommon.entity.State;
 import com.ct.dataapi.mapper.DTOToEntityMapper;
 import com.ct.dataapi.repository.CountryRepository;
 import com.ct.dataapi.repository.StateRepository;

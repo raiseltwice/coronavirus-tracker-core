@@ -1,7 +1,7 @@
 package com.ct.dataapi.controller.modification;
 
 import com.ct.dataapi.dto.CountryDTO;
-import com.ct.dataapi.entitiestodelete.Country;
+import com.ct.entitycommon.entity.Country;
 import com.ct.dataapi.service.CountryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;

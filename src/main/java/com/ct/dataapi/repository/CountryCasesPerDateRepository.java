@@ -1,7 +1,7 @@
 package com.ct.dataapi.repository;
 
 
-import com.ct.dataapi.entitiestodelete.CountryCasesPerDate;
+import com.ct.entitycommon.entity.CountryCasesPerDate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

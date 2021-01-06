@@ -1,7 +1,7 @@
 package com.ct.dataapi.controller.modification;
 
 import com.ct.dataapi.dto.CasesPerDateDTO;
-import com.ct.dataapi.entitiestodelete.StateCasesPerDate;
+import com.ct.entitycommon.entity.StateCasesPerDate;
 import com.ct.dataapi.service.StateCasesPerDateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

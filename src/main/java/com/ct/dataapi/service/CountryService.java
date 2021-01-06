@@ -3,7 +3,7 @@ package com.ct.dataapi.service;
 import com.ct.dataapi.dto.CountryDTO;
 import com.ct.dataapi.mapper.DTOToEntityMapper;
 import com.ct.dataapi.repository.CountryRepository;
-import com.ct.dataapi.entitiestodelete.Country;
+import com.ct.entitycommon.entity.Country;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

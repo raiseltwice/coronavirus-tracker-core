@@ -1,7 +1,7 @@
 package com.ct.dataapi.controller.modification;
 
 import com.ct.dataapi.dto.StateDTO;
-import com.ct.dataapi.entitiestodelete.State;
+import com.ct.entitycommon.entity.State;
 import com.ct.dataapi.service.StateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;

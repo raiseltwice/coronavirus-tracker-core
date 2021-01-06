@@ -1,8 +1,8 @@
 package com.ct.dataapi.service;
 
 import com.ct.dataapi.dto.CasesPerDateDTO;
-import com.ct.dataapi.entitiestodelete.Country;
-import com.ct.dataapi.entitiestodelete.CountryCasesPerDate;
+import com.ct.entitycommon.entity.Country;
+import com.ct.entitycommon.entity.CountryCasesPerDate;
 import com.ct.dataapi.mapper.DTOToEntityMapper;
 import com.ct.dataapi.repository.CountryCasesPerDateRepository;
 import com.ct.dataapi.repository.CountryRepository;

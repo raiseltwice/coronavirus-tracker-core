@@ -1,6 +1,6 @@
 package com.ct.dataapi.repository;
 
-import com.ct.dataapi.entitiestodelete.State;
+import com.ct.entitycommon.entity.State;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

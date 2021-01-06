@@ -1,10 +1,10 @@
 package com.ct.dataapi.mapper;
 
-import com.ct.dataapi.entitiestodelete.Country;
-import com.ct.dataapi.entitiestodelete.CountryCasesPerDate;
-import com.ct.dataapi.entitiestodelete.State;
-import com.ct.dataapi.entitiestodelete.StateCasesPerDate;
-import com.ct.dataapi.protobuf.Protos;
+import com.ct.entitycommon.entity.Country;
+import com.ct.entitycommon.entity.CountryCasesPerDate;
+import com.ct.entitycommon.entity.State;
+import com.ct.entitycommon.entity.StateCasesPerDate;
+import ct.coreapi.common.Protos;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class EntityToProtobufMapper {
-
     public Protos.Countries mapCountries(List<Country> countryEntities) {
         List<Protos.Country> countryProtos =
                 countryEntities.stream().map(this::mapCountry).collect(Collectors.toList());

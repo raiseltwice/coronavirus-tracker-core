@@ -1,6 +1,6 @@
 package com.ct.dataapi.controller.access;
 
-import com.ct.dataapi.protobuf.Protos;
+import ct.coreapi.common.Protos;
 import com.ct.dataapi.service.protobuf.CountryCasesPerDateProtobufService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

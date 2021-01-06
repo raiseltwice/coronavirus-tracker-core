@@ -3,10 +3,10 @@ package com.ct.dataapi.mapper;
 import com.ct.dataapi.dto.CasesPerDateDTO;
 import com.ct.dataapi.dto.CountryDTO;
 import com.ct.dataapi.dto.StateDTO;
-import com.ct.dataapi.entitiestodelete.Country;
-import com.ct.dataapi.entitiestodelete.CountryCasesPerDate;
-import com.ct.dataapi.entitiestodelete.State;
-import com.ct.dataapi.entitiestodelete.StateCasesPerDate;
+import com.ct.entitycommon.entity.Country;
+import com.ct.entitycommon.entity.CountryCasesPerDate;
+import com.ct.entitycommon.entity.State;
+import com.ct.entitycommon.entity.StateCasesPerDate;
 import org.springframework.stereotype.Component;
 
 @Component

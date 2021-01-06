@@ -1,8 +1,8 @@
 package com.ct.dataapi.service.protobuf;
 
-import com.ct.dataapi.entitiestodelete.CountryCasesPerDate;
+import com.ct.entitycommon.entity.CountryCasesPerDate;
 import com.ct.dataapi.mapper.EntityToProtobufMapper;
-import com.ct.dataapi.protobuf.Protos;
+import ct.coreapi.common.Protos;
 import com.ct.dataapi.service.CountryCasesPerDateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

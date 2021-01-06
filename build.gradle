@@ -22,8 +22,8 @@ dependencies {
 
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     compile group: 'org.apache.commons', name: 'commons-lang3'
-//    implementation 'com.github.raiseltwice:ct-entity-common:1.7'
-//    implementation 'com.github.raiseltwice:ct-core-api-protobuf:1.8'
+    implementation 'com.github.raiseltwice:ct-entity-common:1.9'
+    implementation 'com.github.raiseltwice:ct-core-api-common:1.9'
 
     // lombok
     compileOnly 'org.projectlombok:lombok:1.18.16'
