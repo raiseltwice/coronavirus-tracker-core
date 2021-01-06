@@ -80,3 +80,7 @@ nb-configuration.xml
 ## OS X
 ##############################
 .DS_Store 
+
+gradle
+gradlew
+gradlew.bat
