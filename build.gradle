@@ -16,11 +16,14 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
 
+    // spring
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.0'
 
+    // protobuf
     compile group: 'com.google.protobuf', name: 'protobuf-java', version: '3.13.0'
 
+    // misc
     compile group: 'org.apache.commons', name: 'commons-lang3'
     implementation 'com.github.raiseltwice:coronavirus-tracker-entity-common:1.14'
     implementation 'com.github.raiseltwice:coronavirus-tracker-core-api:1.10'
