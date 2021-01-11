@@ -1,16 +1,18 @@
 package coronavirus.tracker.core.converter;
 
-import coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos;
 import coronavirus.tracker.entitycommon.entity.State;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-@Component
-public class StateEntity2StateConverter implements Converter<State, CoronavirusTrackerCoreProtos.State> {
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.StateDTO;
+import static coronavirus.tracker.core.utils.ConverterQualifiers.StateEntity2StateConverter;
+
+@Component(StateEntity2StateConverter)
+public class StateEntity2StateConverter implements Converter<State, StateDTO> {
 
     @Override
-    public CoronavirusTrackerCoreProtos.State convert(State stateEntity) {
-        CoronavirusTrackerCoreProtos.State.Builder countryProtoBuilder = CoronavirusTrackerCoreProtos.State.newBuilder()
+    public StateDTO convert(State stateEntity) {
+        StateDTO.Builder countryProtoBuilder = StateDTO.newBuilder()
                 .setStateName(stateEntity.getStateName());
 
         if (stateEntity.getLatitude() != null) {

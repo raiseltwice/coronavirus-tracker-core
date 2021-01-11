@@ -1,20 +1,23 @@
 package coronavirus.tracker.core.service;
 
-import coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos;
-import coronavirus.tracker.core.converter.StateEntities2StatesConverter;
-import coronavirus.tracker.core.converter.StateEntity2StateConverter;
-import coronavirus.tracker.core.dto.StateDTO;
-import coronavirus.tracker.entitycommon.entity.Country;
-import coronavirus.tracker.entitycommon.entity.State;
-import coronavirus.tracker.core.mapper.DTOToEntityMapper;
+import coronavirus.tracker.core.dto.StateData;
 import coronavirus.tracker.core.repository.CountryRepository;
 import coronavirus.tracker.core.repository.StateRepository;
+import coronavirus.tracker.entitycommon.entity.Country;
+import coronavirus.tracker.entitycommon.entity.State;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.StateDTO;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.StatesDTO;
+import static coronavirus.tracker.core.utils.ConverterQualifiers.StateEntities2StatesConverter;
+import static coronavirus.tracker.core.utils.ConverterQualifiers.StateEntity2StateConverter;
 
 @Transactional
 @Service
@@ -23,38 +26,40 @@ public class StateService {
 
     private final StateRepository stateRepository;
     private final CountryRepository countryRepository;
-    private final DTOToEntityMapper dtoToEntityMapper;
-    private final StateEntity2StateConverter stateEntity2StateConverter;
-    private final StateEntities2StatesConverter stateEntities2StatesConverter;
 
-    public CoronavirusTrackerCoreProtos.States findStatesByCountryName(String countryName) {
+    @Qualifier(StateEntity2StateConverter)
+    private final ConversionService stateEntity2StateConverter;
+    @Qualifier(StateEntities2StatesConverter)
+    private final ConversionService stateEntities2StatesConverter;
+
+    public StatesDTO findStatesByCountryName(String countryName) {
         List<State> stateEntities = stateRepository.findStatesByCountry_CountryName(countryName);
-        return stateEntities2StatesConverter.convert(stateEntities);
+        return stateEntities2StatesConverter.convert(stateEntities, StatesDTO.class);
     }
 
-    public CoronavirusTrackerCoreProtos.State findOneByCountryNameAndStateName(String countryName, String stateName) {
-        State stateEntity = stateRepository.findOneByCountry_CountryNameAndStateName(countryName, stateName).orElseThrow(
-                () -> new IllegalArgumentException("State named " +
+    public StateDTO findOneByCountryNameAndStateName(String countryName, String stateName) {
+        State stateEntity = stateRepository.findOneByCountry_CountryNameAndStateName(countryName, stateName)
+                .orElseThrow(() -> new IllegalArgumentException("State named " +
                         stateName + " in country named " + countryName + " was not found"));
-        return stateEntity2StateConverter.convert(stateEntity);
+        return stateEntity2StateConverter.convert(stateEntity, StateDTO.class);
     }
 
-    public State createState(String countryName, StateDTO stateDTO) {
-        State state = constructStateEntity(countryName, stateDTO);
+    public State createState(String countryName, StateData stateData) {
+        State state = constructStateEntity(countryName, stateData);
         return stateRepository.save(state);
     }
 
-    public State updateState(String countryName, String stateName, StateDTO stateDTO) {
-        stateDTO.setStateName(stateName);
+    public State updateState(String countryName, String stateName, StateData stateData) {
+        stateData.setStateName(stateName);
         State state;
         Optional<State> stateFromRepoOpt =
-                stateRepository.findOneByCountry_CountryNameAndStateName(countryName, stateDTO.getStateName());
+                stateRepository.findOneByCountry_CountryNameAndStateName(countryName, stateData.getStateName());
         if (stateFromRepoOpt.isPresent()) {
             state = stateFromRepoOpt.get();
-            state.setLatitude(stateDTO.getLatitude());
-            state.setLongitude(stateDTO.getLongitude());
+            state.setLatitude(stateData.getLatitude());
+            state.setLongitude(stateData.getLongitude());
         } else {
-            state = constructStateEntity(countryName, stateDTO);
+            state = constructStateEntity(countryName, stateData);
         }
         return stateRepository.save(state);
     }
@@ -63,9 +68,9 @@ public class StateService {
         stateRepository.deleteByCountry_CountryNameAndStateName(countryName, stateName);
     }
 
-    private State constructStateEntity(String countryName, StateDTO stateDTO) {
+    private State constructStateEntity(String countryName, StateData stateData) {
         Country countryFromRepo = fetchCountry(countryName);
-        return dtoToEntityMapper.mapStateDTO(countryFromRepo, stateDTO);
+        return new State(stateData.getStateName(), stateData.getLatitude(), stateData.getLongitude(), countryFromRepo);
     }
 
     private Country fetchCountry(String countryName) {

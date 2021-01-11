@@ -3,9 +3,9 @@ package coronavirus.tracker.core.dto;
 import lombok.Data;
 
 @Data
-public class CountryDTO {
+public class StateData {
 
-    private String countryName;
+    private String stateName;
     private Double latitude;
     private Double longitude;
 }

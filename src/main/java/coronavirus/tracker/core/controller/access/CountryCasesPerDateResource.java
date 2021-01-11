@@ -12,31 +12,30 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
-import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDate;
-import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateCollection;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateDTO;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateCollectionDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(produces = "application/x-protobuf")
-public class CountryCasesPerDateAccessController {
+public class CountryCasesPerDateResource {
 
     private final CountryCasesPerDateService countryCasesPerDateService;
 
-
     @GetMapping("/countries/{countryName}/cases-per-date")
-    public CasesPerDateCollection findCountryCasesPerDateByCountryName(@PathVariable String countryName) {
+    public CasesPerDateCollectionDTO findCountryCasesPerDateByCountryName(@PathVariable String countryName) {
         return countryCasesPerDateService.findAllByCountryName(countryName);
     }
 
     @GetMapping("/countries/{countryName}/cases-per-date/{date}")
-    public CasesPerDate findCountryCasesPerDateByCountryNameByDate(
+    public CasesPerDateDTO findCountryCasesPerDateByCountryNameByDate(
             @PathVariable String countryName,
             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         return countryCasesPerDateService.findOneByCountryNameAndDate(countryName, date);
     }
 
     @GetMapping(value = "/countries/{countryName}/cases-per-date", params = {"startDate", "endDate"})
-    public CasesPerDateCollection findCountryCasesPerDateByCountryNameAndDateRange(
+    public CasesPerDateCollectionDTO findCountryCasesPerDateByCountryNameAndDateRange(
             @PathVariable String countryName,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate) {

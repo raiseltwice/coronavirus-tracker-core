@@ -11,24 +11,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 
-import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDate;
-import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateCollection;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateDTO;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateCollectionDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(produces = "application/x-protobuf")
-public class StateCasesPerDateAccessController {
+public class StateCasesPerDateResource {
 
     private final StateCasesPerDateService stateCasesPerDateService;
 
     @GetMapping("/countries/{countryName}/states/{stateName}/cases-per-date")
-    public CasesPerDateCollection getStateCasesPerDateByStateName(@PathVariable String countryName,
-                                                                         @PathVariable String stateName) {
+    public CasesPerDateCollectionDTO getStateCasesPerDateByStateName(@PathVariable String countryName,
+                                                                     @PathVariable String stateName) {
         return stateCasesPerDateService.findAllByCountryNameAndStateName(countryName, stateName);
     }
 
     @GetMapping(value = "/countries/{countryName}/states/{stateName}/cases-per-date", params = {"startDate", "endDate"})
-    public CasesPerDateCollection getStateCasesPerDateByStateName(
+    public CasesPerDateCollectionDTO getStateCasesPerDateByStateName(
             @PathVariable String countryName,
             @PathVariable String stateName,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
@@ -38,11 +38,10 @@ public class StateCasesPerDateAccessController {
     }
 
     @GetMapping("/countries/{countryName}/states/{stateName}/cases-per-date/{date}")
-    public CasesPerDate getStateCasesPerDateByStateName(
+    public CasesPerDateDTO getStateCasesPerDateByStateName(
             @PathVariable String countryName,
             @PathVariable String stateName,
-            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date
-    ) {
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         return stateCasesPerDateService.findOneByCountryNameAndStateNameAndDate(countryName, stateName, date);
     }
 }

@@ -1,16 +1,20 @@
 package coronavirus.tracker.core.converter;
 
-import coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos;
 import coronavirus.tracker.entitycommon.entity.Country;
+import lombok.NoArgsConstructor;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-@Component
-public class CountryEntity2CountryConverter implements Converter<Country, CoronavirusTrackerCoreProtos.Country> {
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CountryDTO;
+import static coronavirus.tracker.core.utils.ConverterQualifiers.CountryEntity2CountryConverter;
+
+@Component(CountryEntity2CountryConverter)
+@NoArgsConstructor
+public class CountryEntity2CountryConverter implements Converter<Country, CountryDTO> {
 
     @Override
-    public CoronavirusTrackerCoreProtos.Country convert(Country countryEntity) {
-        CoronavirusTrackerCoreProtos.Country.Builder countryProtoBuilder = CoronavirusTrackerCoreProtos.Country.newBuilder()
+    public CountryDTO convert(Country countryEntity) {
+        CountryDTO.Builder countryProtoBuilder = CountryDTO.newBuilder()
                 .setCountryName(countryEntity.getCountryName());
 
         if (countryEntity.getLatitude() != null) {

@@ -1,6 +1,6 @@
 package coronavirus.tracker.core.controller.modification;
 
-import coronavirus.tracker.core.dto.CasesPerDateDTO;
+import coronavirus.tracker.core.dto.CasesPerDateData;
 import coronavirus.tracker.entitycommon.entity.StateCasesPerDate;
 import coronavirus.tracker.core.service.StateCasesPerDateService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +23,8 @@ public class StateCasesPerDateController {
     @PostMapping("/countries/{countryName}/states/{stateName}/cases-per-date")
     public StateCasesPerDate createStateCasesPerDate(@PathVariable String countryName,
                                                      @PathVariable String stateName,
-                                                     @RequestBody CasesPerDateDTO casesPerDateDTO) {
-        return stateCasesPerDateService.createStateCasesPerDate(countryName, stateName, casesPerDateDTO);
+                                                     @RequestBody CasesPerDateData casesPerDateData) {
+        return stateCasesPerDateService.createStateCasesPerDate(countryName, stateName, casesPerDateData);
     }
 
     @PutMapping("/countries/{countryName}/states/{stateName}/cases-per-date/{date}")
@@ -32,8 +32,8 @@ public class StateCasesPerDateController {
             @PathVariable String countryName,
             @PathVariable String stateName,
             @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @RequestBody CasesPerDateDTO casesPerDateDTO) {
-        return stateCasesPerDateService.updateStateCasesPerDate(countryName, stateName, date, casesPerDateDTO);
+            @RequestBody CasesPerDateData casesPerDateData) {
+        return stateCasesPerDateService.updateStateCasesPerDate(countryName, stateName, date, casesPerDateData);
     }
 
     @DeleteMapping("/countries/{countryName}/states/{stateName}/cases-per-date/{date}")

@@ -1,21 +1,24 @@
 package coronavirus.tracker.core.service;
 
-import coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos;
-import coronavirus.tracker.core.converter.CountryCasesPerDateEntities2CasesPerDateCollectionConverter;
-import coronavirus.tracker.core.converter.CountryCasesPerDateEntity2CasesPerDateConverter;
-import coronavirus.tracker.core.dto.CasesPerDateDTO;
-import coronavirus.tracker.entitycommon.entity.Country;
-import coronavirus.tracker.entitycommon.entity.CountryCasesPerDate;
-import coronavirus.tracker.core.mapper.DTOToEntityMapper;
+import coronavirus.tracker.core.dto.CasesPerDateData;
 import coronavirus.tracker.core.repository.CountryCasesPerDateRepository;
 import coronavirus.tracker.core.repository.CountryRepository;
+import coronavirus.tracker.entitycommon.entity.Country;
+import coronavirus.tracker.entitycommon.entity.CountryCasesPerDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateCollectionDTO;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CasesPerDateDTO;
+import static coronavirus.tracker.core.utils.ConverterQualifiers.CountryCasesPerDateEntities2CasesPerDateCollectionConverter;
+import static coronavirus.tracker.core.utils.ConverterQualifiers.CountryCasesPerDateEntity2CasesPerDateConverter;
 
 @Transactional
 @Service
@@ -24,51 +27,55 @@ public class CountryCasesPerDateService {
 
     private final CountryCasesPerDateRepository countryCasesPerDateRepository;
     private final CountryRepository countryRepository;
-    private final DTOToEntityMapper dtoToEntityMapper;
-    private final CountryCasesPerDateEntity2CasesPerDateConverter countryCasesPerDateEntity2CasesPerDateConverter;
-    private final CountryCasesPerDateEntities2CasesPerDateCollectionConverter countryCasesPerDateEntities2CasesPerDateCollectionConverter;
 
-    public CoronavirusTrackerCoreProtos.CasesPerDateCollection findAllByCountryName(String countryName) {
+    @Qualifier(CountryCasesPerDateEntity2CasesPerDateConverter)
+    private final ConversionService countryCasesPerDateEntity2CasesPerDateConverter;
+    @Qualifier(CountryCasesPerDateEntities2CasesPerDateCollectionConverter)
+    private final ConversionService countryCasesPerDateEntities2CasesPerDateCollectionConverter;
+
+    public CasesPerDateCollectionDTO findAllByCountryName(String countryName) {
         List<CountryCasesPerDate> countryCasesPerDateEntities =
                 countryCasesPerDateRepository.findAllByCountry_CountryName(countryName);
-        return countryCasesPerDateEntities2CasesPerDateCollectionConverter.convert(countryCasesPerDateEntities);
+        return countryCasesPerDateEntities2CasesPerDateCollectionConverter
+                .convert(countryCasesPerDateEntities, CasesPerDateCollectionDTO.class);
     }
 
-    public CoronavirusTrackerCoreProtos.CasesPerDate findOneByCountryNameAndDate(String countryName, LocalDate date) {
+    public CasesPerDateDTO findOneByCountryNameAndDate(String countryName, LocalDate date) {
         CountryCasesPerDate countryCasesPerDate =
-                countryCasesPerDateRepository.findOneByCountry_CountryNameAndDate(countryName, date).orElseThrow(
-                        () -> new IllegalArgumentException("CountryCasesPerDate dated " +
+                countryCasesPerDateRepository.findOneByCountry_CountryNameAndDate(countryName, date)
+                        .orElseThrow(() -> new IllegalArgumentException("CountryCasesPerDate dated " +
                                 date.toString() + " in country named " + countryName + " was not found"));
-        return countryCasesPerDateEntity2CasesPerDateConverter.convert(countryCasesPerDate);
+        return countryCasesPerDateEntity2CasesPerDateConverter.convert(countryCasesPerDate, CasesPerDateDTO.class);
     }
 
-    public CoronavirusTrackerCoreProtos.CasesPerDateCollection findAllByCountryNameAndDateRange(String countryName,
-                                                                                                LocalDate startDate,
-                                                                                                LocalDate endDate) {
+    public CasesPerDateCollectionDTO findAllByCountryNameAndDateRange(String countryName,
+                                                                      LocalDate startDate,
+                                                                      LocalDate endDate) {
         List<CountryCasesPerDate> countryCasesPerDateEntities =
                 countryCasesPerDateRepository.findAllByCountry_CountryNameAndDateBetween(countryName, startDate, endDate);
-        return countryCasesPerDateEntities2CasesPerDateCollectionConverter.convert(countryCasesPerDateEntities);
+        return countryCasesPerDateEntities2CasesPerDateCollectionConverter
+                .convert(countryCasesPerDateEntities, CasesPerDateCollectionDTO.class);
     }
 
     public CountryCasesPerDate createCountryCasesPerDate(String countryName,
-                                                         CasesPerDateDTO casesPerDateDTO) {
-        CountryCasesPerDate countryCasesPerDate = constructCasesPerDateEntity(countryName, casesPerDateDTO);
+                                                         CasesPerDateData casesPerDateData) {
+        CountryCasesPerDate countryCasesPerDate = constructCasesPerDateEntity(countryName, casesPerDateData);
         return countryCasesPerDateRepository.save(countryCasesPerDate);
     }
 
     public CountryCasesPerDate updateCountryCasesPerDate(String countryName,
                                                          LocalDate date,
-                                                         CasesPerDateDTO casesPerDateDTO) {
-        casesPerDateDTO.setDate(date);
+                                                         CasesPerDateData casesPerDateData) {
+        casesPerDateData.setDate(date);
         CountryCasesPerDate countryCasesPerDate;
         Optional<CountryCasesPerDate> countryCasesPerDateFromRepoOpt =
                 countryCasesPerDateRepository.findOneByCountry_CountryNameAndDate(countryName,
-                        casesPerDateDTO.getDate());
+                        casesPerDateData.getDate());
         if (countryCasesPerDateFromRepoOpt.isPresent()) {
             countryCasesPerDate = countryCasesPerDateFromRepoOpt.get();
-            countryCasesPerDate.setNumberOfCases(casesPerDateDTO.getNumberOfCases());
+            countryCasesPerDate.setNumberOfCases(casesPerDateData.getNumberOfCases());
         } else {
-            countryCasesPerDate = constructCasesPerDateEntity(countryName, casesPerDateDTO);
+            countryCasesPerDate = constructCasesPerDateEntity(countryName, casesPerDateData);
         }
         return countryCasesPerDateRepository.save(countryCasesPerDate);
     }
@@ -78,9 +85,10 @@ public class CountryCasesPerDateService {
     }
 
     private CountryCasesPerDate constructCasesPerDateEntity(String countryName,
-                                                            CasesPerDateDTO casesPerDateDTO) {
+                                                            CasesPerDateData casesPerDateData) {
         Country countryFromRepo = fetchCountry(countryName);
-        return dtoToEntityMapper.mapCountryCasesPerDateDTO(countryFromRepo, casesPerDateDTO);
+        return new CountryCasesPerDate(
+                countryFromRepo, casesPerDateData.getDate(), casesPerDateData.getNumberOfCases());
     }
 
     private Country fetchCountry(String countryName) {

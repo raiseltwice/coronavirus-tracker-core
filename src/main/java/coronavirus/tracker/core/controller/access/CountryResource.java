@@ -7,23 +7,23 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.Countries;
-import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.Country;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CountriesDTO;
+import static coronavirus.tracker.core.api.CoronavirusTrackerCoreProtos.CountryDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(produces = "application/x-protobuf")
-public class CountryAccessController {
+public class CountryResource {
 
     private final CountryService countryService;
 
     @GetMapping("/countries")
-    public Countries findAllCountries() {
+    public CountriesDTO findAllCountries() {
         return countryService.findAllCountries();
     }
 
     @GetMapping("/countries/{countryName}")
-    public Country findCountryByName(@PathVariable String countryName) {
+    public CountryDTO findCountryByName(@PathVariable String countryName) {
         return countryService.findOneCountryByName(countryName);
     }
 }
